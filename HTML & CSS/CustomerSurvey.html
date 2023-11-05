@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Customer Survey Form</title>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: rgb(26, 138, 182);
+        }
+
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .form-container {
+            border: 2px solid #ccc; 
+            border-radius: 5px;
+            padding: 10px;
+            background-color: white;
+        }
+
+        #titl{
+            text-align: center;
+            color: #ccc;
+            font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+            font-size: 40px;
+            font-stretch: semi-expanded;
+        }
+
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+
+        input, select {
+            width: 95%;
+            padding: 10px;
+            margin-top: 5px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .radio-container {
+            display: flex;
+            align-items: left;
+        }
+
+        .radio-label {
+            margin-right: 10px; 
+        }
+
+        .popup {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            text-align: center;
+            z-index: 1;
+        }
+
+        .popup-content {
+            position: relative;
+            display: inline-block;
+            padding: 20px;
+            background: white;
+            border-radius: 4px;
+            margin: 100px auto;
+            text-align: left;
+        }
+
+        .close {
+            position: absolute;
+            top: 5px;
+            right: 10px;
+            cursor: pointer;
+        }
+
+        button[type="button"] {
+            background-color: rgb(26, 138, 182); 
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        #feedback{
+            height: 100px;
+            width: 95%;
+        }
+
+        footer{
+            text-align: center;
+            color: azure;
+            text-decoration: none;
+            font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <p id="titl">Customer Survey Form</p>
+        <div class="form-container"> 
+            <form id="surveyForm">
+                <div>
+                <label for="Name">Name:</label>
+                <input type="text" id="Name" required>
+                
+                <label for="mail">Email</label>
+                <input type="email" id="mail" required>
+                </div>
+
+                <p>Is this the first time you are using our product & services?</p>
+                <div class="radio-container">
+                    <label class="radio-label" for="Yes">Yes</label>
+                    <input type="radio" id="Yes" name="opinion">
+                    <label class="radio-label" for="No">No</label>
+                    <input type="radio" id="No" name="opinion">
+                </div>
+                
+                <p>Would you suggest us to your friends and colleagues?</p>
+                <div class="radio-container">
+                    <label class="radio-label" for="Yes2">Yes</label>
+                    <input type="radio" id="Yes2" name="opinion2">
+                    <label class="radio-label" for="No2">No</label>
+                    <input type="radio" id="No2" name="opinion2">
+                </div>
+
+                <p>How satisfied are you with our company overall?</p>
+                <div class="radio-container">
+                    <label class="radio-label" for="Satisfied">Satisfied</label>
+                    <input type="radio" id="Satisfied" name="opinion3">
+                    <label class="radio-label" for="Undecided">Undecided</label>
+                    <input type="radio" id="Undecided" name="opinion3">
+                    <label class="radio-label" for="Unsatisfied">Unsatisfied</label>
+                    <input type="radio" id="Unsatisfied" name="opinion3">
+                </div>
+
+                <p>Do you have suggestions to improve our service?</p>
+                <input type="text" id="feedback">
+
+                <button type="button" onclick="submitForm()" style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;">SUBMIT</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="popup" id="popup">
+        <div class="popup-content">
+            <span class="close" onclick="closePopup()">&times;</span>
+            <h2>Survey Form Results:</h2>
+            <div id="results"></div>
+        </div>
+    </div>
+
+    <footer>
+        <p>@2023 Customer Survey Form. All Rights Reserved | Designed By <a href="https://cloudvandana.com/">Cloud Vandana</a> </p>
+    </footer>
+
+    <script>
+        function submitForm() {
+            const Name = document.getElementById('Name').value;
+            const Email = document.getElementById('mail').value;
+            const opinion = document.querySelector('input[name="opinion"]:checked').value;
+            const opinion2 = document.querySelector('input[name="opinion2"]:checked').value;
+            const opinion3 = document.querySelector('input[name="opinion3"]:checked').value;
+            const feedback = document.getElementById('feedback').value;
+
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = `
+                <p><strong>Name:</strong> ${Name}</p>
+                <p><strong>Email:</strong> ${Email}</p>
+                <p><strong>Is this your first time using our product & services?</strong> ${opinion}</p>
+                <p><strong>Would you suggest us to your friends and colleagues?</strong> ${opinion2}</p>
+                <p><strong>How satisfied are you with our company overall?</strong> ${opinion3}</p>
+                <p><strong>Suggestions to improve our service:</strong> ${feedback}</p>
+            `;
+
+            const popup = document.getElementById('popup');
+            popup.style.display = 'block';
+
+            resetForm();
+        }
+
+        function closePopup() {
+            const popup = document.getElementById('popup');
+            popup.style.display = 'none';
+        }
+
+        function resetForm() {
+            document.getElementById('surveyForm').reset();
+        }
+    </script>
+</body>
+</html>
